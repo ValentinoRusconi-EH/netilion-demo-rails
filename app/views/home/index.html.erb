@@ -1,0 +1,10 @@
+<% if session[:user_info].present? %>
+  <h1>Welcome, <%= session[:user_info]["name"] %></h1>
+  <p>Email: <%= session[:user_info]["email"] %></p>
+  <!-- Add other user info you want to display -->
+  <%= button_to 'Logout', logout_path, method: :delete %>
+<% else %>
+  <%= form_tag('/auth/oauth2', method: 'post', data: { turbo: false }) do %>
+    <button type='submit'>Login with Netilion</button>
+  <% end %>
+<% end %>

@@ -3,7 +3,7 @@
 This Rails application demonstrates the integration of the Netilion OAuth flow, providing a practical example of authenticating users via OAuth in a Ruby on Rails application. The app highlights how to configure and implement OAuth authentication, fetch user details from the Netilion API, and manage user sessions.
 
 ## Netilion OAuh Flow 
-The official documentation about the Netilion OAuth Flow can be found [here]("https://developer.staging-env.netilion.endress.com/first_steps/auth/#auth-flow-for-web-applications").
+The official documentation about the Netilion OAuth Flow can be found [here](https://developer.staging-env.netilion.endress.com/first_steps/auth/#auth-flow-for-web-applications).
 
 ## Features
 

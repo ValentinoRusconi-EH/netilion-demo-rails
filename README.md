@@ -24,8 +24,8 @@ Before running this application, ensure you have:
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/valentinorusconi-eh/netilion-oauth-rails.git
-cd netilion-oauth-rails
+git clone https://github.com/valentinorusconi-eh/netilion-demo-rails.git
+cd netilion-demo-rails
 bundle install
 ```
 

@@ -1,4 +1,4 @@
-# Netilion OAuth Flow Showcase in Rails
+# Netilion Showcase in Rails
 
 This Rails application demonstrates the integration of the Netilion OAuth flow, providing a practical example of authenticating users via OAuth in a Ruby on Rails application. The app highlights how to configure and implement OAuth authentication, fetch user details from the Netilion API, and manage user sessions.
 

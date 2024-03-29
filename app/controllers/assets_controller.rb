@@ -1,3 +1,4 @@
+
 class AssetsController < ApplicationController
   before_action :set_asset, only: [:destroy]
 
@@ -8,7 +9,7 @@ class AssetsController < ApplicationController
     params = { include: 'product,manufacturer' }
     uri.query = URI.encode_www_form(params)
 
-    request["Authorization"] = "Bearer #{session[:token]}"
+    request['Authorization'] = "Bearer #{session[:token]}"
 
     response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
       http.request(request)
@@ -20,16 +21,16 @@ class AssetsController < ApplicationController
     @assets = []
     flash.now[:alert] = "There was a problem fetching the assets."
 
-  respond_to do |format|
-    format.html 
-    format.json { render json: @assets }
+    respond_to do |format|
+      format.html 
+      format.json { render json: @assets }
     end
   end
 
   def destroy
     uri = URI("#{ENV['API_URL']}/assets/#{@asset['id']}")
     request = Net::HTTP::Delete.new(uri)
-    request["Authorization"] = "Bearer #{session[:token]}"
+    request['Authorization'] = "Bearer #{session[:token]}"
 
     response = Net::HTTP.start(uri) { |http| http.request(request) }
 
@@ -48,12 +49,11 @@ class AssetsController < ApplicationController
   def set_asset
     uri = URI("#{ENV['API_URL']}/assets/#{params[:id]}")
     request = Net::HTTP::Get.new(uri)
-    request["Authorization"] = "Bearer #{session[:token]}"
-    
+    request ['Authorization'] = "Bearer #{session[:token]}"
+
     response = Net::HTTP.start(uri.hostname, uri.port) { |http| http.request(request) }
     body = JSON.parse(response.body)
-    debugger
   rescue JSON::ParserError
-    redirect_to assets_url, alert: "There was a problem fetching the asset."
+    redirect_to assets_url, alert: 'There was a problem fetching the asset.'
   end
 end

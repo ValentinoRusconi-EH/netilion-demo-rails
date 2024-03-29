@@ -7,4 +7,10 @@ Rails.application.routes.draw do
   # root "articles#index"
   get '/auth/:provider/callback', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy', as: :logout
+
+  get 'assets', to: 'assets#index', as: 'assets'
+
+  # Route for deleting an asset
+  delete 'assets/:id', to: 'assets#destroy', as: 'asset'
+
 end

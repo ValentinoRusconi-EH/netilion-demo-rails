@@ -11,7 +11,8 @@ class SessionsController < ApplicationController
     if params[:error]
       log_and_redirect_on_error
     else
-      user_data = fetch_user_data(request.env['omniauth.auth'].credentials.token)
+      set_token(request.env['omniauth.auth'].credentials.token)
+      user_data = fetch_user_data(session[:token])
       store_user_data_in_session(user_data) if user_data
       redirect_to root_path, notice: "Authentication successful!"
     end
@@ -25,7 +26,7 @@ class SessionsController < ApplicationController
   private
 
   def fetch_user_data(token)
-    uri = URI.parse("http://localhost:3000/v1/users/current")
+    uri = URI.parse("#{ENV['API_URL']}/users/current")
     request = Net::HTTP::Get.new(uri)
     request["Authorization"] = "Bearer #{token}"
   
@@ -44,6 +45,10 @@ class SessionsController < ApplicationController
 
   def store_user_data_in_session(user_data)
     session[:user_info] = user_data
+  end
+
+  def set_token(token)
+    session[:token] = token
   end
 
   def log_and_redirect_on_error

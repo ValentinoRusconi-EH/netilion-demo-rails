@@ -41,7 +41,6 @@ class SessionsController < ApplicationController
       nil
     end
   end
-  
 
   def store_user_data_in_session(user_data)
     session[:user_info] = user_data

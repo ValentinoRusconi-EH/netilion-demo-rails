@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   root 'home#index'
   get 'home/index'
@@ -8,9 +10,5 @@ Rails.application.routes.draw do
   get '/auth/:provider/callback', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy', as: :logout
 
-  get 'assets', to: 'assets#index', as: 'assets'
-
-  # Route for deleting an asset
-  delete 'assets/:id', to: 'assets#destroy', as: 'asset'
-
+  resources :assets, only: %i[index show destroy]
 end

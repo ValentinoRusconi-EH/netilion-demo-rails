@@ -1,13 +1,13 @@
-
 class AssetsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_asset, only: [:destroy]
 
   def index
     uri = URI("#{ENV['API_URL']}/assets")
-    request = Net::HTTP::Get.new(uri)
 
-    params = { include: 'product,manufacturer' }
+    params = { include: 'status' }
     uri.query = URI.encode_www_form(params)
+    request = Net::HTTP::Get.new(uri)
 
     request['Authorization'] = "Bearer #{session[:token]}"
 
@@ -19,11 +19,28 @@ class AssetsController < ApplicationController
     @assets = @body['assets']
   rescue JSON::ParserError
     @assets = []
-    flash.now[:alert] = "There was a problem fetching the assets."
+    flash.now[:alert] = 'There was a problem fetching the assets.'
 
     respond_to do |format|
-      format.html 
+      format.html
       format.json { render json: @assets }
+    end
+  end
+
+  def show
+    uri = URI("#{ENV['API_URL']}/assets/#{params[:id]}")
+    params = { include: 'status' }
+    uri.query = URI.encode_www_form(params)
+    request = Net::HTTP::Get.new(uri)
+    request ['Authorization'] = "Bearer #{session[:token]}"
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') { |http| http.request(request) }
+    @asset = JSON.parse(response.body)
+  rescue JSON::ParserError
+    redirect_to assets_url, alert: 'There was a problem fetching the asset.'
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @asset }
     end
   end
 
@@ -37,14 +54,18 @@ class AssetsController < ApplicationController
     respond_to do |format|
       if response.is_a?(Net::HTTPSuccess)
         format.turbo_stream
-        format.html { redirect_to assets_url, notice: "Asset was successfully destroyed." }
+        format.html { redirect_to assets_url, notice: 'Asset was successfully destroyed.' }
       else
-        format.html { redirect_to assets_url, alert: "Failed to delete the asset." }
+        format.html { redirect_to assets_url, alert: 'Failed to delete the asset.' }
       end
     end
   end
 
   private
+
+  def authenticate_user!
+    redirect_to '/auth/oauth2' unless session[:user_info].present?
+  end
 
   def set_asset
     uri = URI("#{ENV['API_URL']}/assets/#{params[:id]}")

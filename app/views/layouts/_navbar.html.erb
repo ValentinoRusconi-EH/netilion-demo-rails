@@ -1,0 +1,46 @@
+<nav class="bg-gray-800 shadow">
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="flex h-16 justify-between">
+      <div class="flex px-2 lg:px-0">
+        <div class="flex flex-shrink-0 items-center">
+          <!-- Include your logo here -->
+        </div>
+      <div class="hidden lg:ml-6 lg:flex lg:space-x-8">
+          <!-- Using Rails 'link_to' helper for the navigation links, adapting current state awareness -->
+          <%= link_to "Dashboard", root_path, class: "#{'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium text-white' + (current_page?(root_path) ? ' border-indigo-500' : ' border-transparent hover:border-gray-300 hover:text-indigo-700')}", aria: { current: ("page" if current_page?(root_path)) } %>
+          <%= link_to "Assets", assets_path, class: "#{'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium text-white' + (current_page?(assets_path) ? ' border-indigo-500' : ' border-transparent hover:border-gray-300 hover:text-indigo-700')}", aria: { current: ("page" if current_page?(assets_path)) } %>
+        </div>
+      </div>
+
+      <div class="flex flex-1 items-center justify-center px-2 lg:ml-6 lg:justify-end">
+        <div class="w-full max-w-lg lg:max-w-xs">
+          <label for="search" class="sr-only">Search</label>
+          <div class="relative">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <!-- Search icon -->
+            </div>
+            <input id="search" name="search" class="block w-full rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Search" type="search">
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center lg:hidden">
+        <!-- Mobile menu button -->
+      </div>
+
+      <div class="hidden lg:ml-4 lg:flex lg:items-center">
+        <!-- User Authentication Section -->
+        <% if session[:user_info].present? %>
+          <h1 class="text-white"><%= session[:user_info]["email"] %></h1>
+          <div>
+            <%= button_to 'Logout', logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-sm bg-gray-900 hover:bg-gray-700 text-white rounded-md px-3 py-2" %>
+          </div>
+        <% else %>
+          <%= form_tag('/auth/oauth2', method: 'post', data: { turbo: false }) do %>
+            <button type='submit' class="text-xs bg-gray-900 hover:bg-gray-700 text-white rounded-md px-3 py-2">Login with Netilion</button>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>
